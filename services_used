@@ -1,0 +1,26 @@
+The weather app in this guide utilizes the following microservices or services concepts:
+
+1. Flask Microservice
+The app itself is a microservice built using Flask, a lightweight web framework for Python.
+It exposes a REST API endpoint (/weather) to provide weather data.
+It takes a city name as input and fetches weather data from an external API.
+2. External API Service (OpenWeatherMap)
+The app integrates with the OpenWeatherMap API, a third-party weather service.
+This external service is used to retrieve real-time weather information such as temperature and weather descriptions.
+3. Docker Service
+Docker encapsulates the application into a containerized service.
+This ensures consistency across environments, from development to production.
+Docker provides services like:
+Image building (docker build)
+Container runtime (docker run)
+Networking (exposing the app on port 5000).
+4. Docker Hub Service
+Docker Hub acts as a registry service to host and share the Docker image (faisal991/weather-app).
+The image can be pulled and run on any system, enabling portability and scalability.
+Summary of Services Used:
+Flask Microservice - For the REST API.
+OpenWeatherMap API - For fetching external weather data.
+Docker - For containerization and managing the app lifecycle.
+Docker Hub - For sharing the Docker image.
+
+This app, while simple, showcases the microservices pattern: decoupling the app logic, third-party integrations, and deployment tools into separate, reusable components.
