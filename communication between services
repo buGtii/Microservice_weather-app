@@ -1,0 +1,66 @@
+In the weather app, the services interact with one another through specific communication methods and protocols, creating a cohesive system. Here's a breakdown of how these services communicate:
+
+1. Flask Microservice Communication
+Incoming Communication (Client to Flask App):
+Protocol: HTTP
+Details:
+The Flask app exposes a REST API endpoint /weather.
+A client (e.g., a browser, Postman, or curl) sends an HTTP GET request with a query parameter city (e.g., http://localhost:5000/weather?city=London).
+Flask extracts the city parameter and processes the request.
+Outgoing Communication (Flask App to External API):
+Protocol: HTTP (using the requests library in Python)
+Details:
+Flask app acts as a client to the OpenWeatherMap API.
+The app constructs a URL with the city name and an API key, such as:
+bash
+
+http://api.openweathermap.org/data/2.5/weather?q=London&appid=your_api_key&units=metric
+Flask sends an HTTP GET request to OpenWeatherMap and receives a JSON response containing weather data.
+2. Communication Between Docker Components
+Docker Runtime and Flask App:
+Mechanism:
+Docker runs the Flask app as a containerized service.
+It forwards requests from the host machine's port (e.g., localhost:5000) to the container's exposed port (5000).
+This is configured using the -p flag in docker run:
+arduino
+
+docker run -d -p 5000:5000 faisal991/weather-app
+Docker Hub (Registry Service):
+Mechanism:
+Docker Hub serves as a repository for the app’s image.
+Push Communication:
+The developer pushes the Docker image to Docker Hub using the docker push command.
+Pull Communication:
+Other systems pull the image using docker pull, allowing the app to run consistently in various environments.
+3. Docker Compose (Optional Orchestration)
+Service Coordination:
+Docker Compose can coordinate multiple services defined in the docker-compose.yml file.
+For example, if the weather app were extended to include a database, Docker Compose would manage both services and their inter-service communication.
+Communication between services in a docker-compose setup uses internal networking, where services can reach each other by their service names.
+4. OpenWeatherMap API Communication
+
+Interaction with Flask App:
+The OpenWeatherMap API serves as an external service providing weather data.
+The Flask app sends HTTP requests to this API and processes the returned JSON response.
+Sequence of Communication
+User Interaction:
+
+The user sends an HTTP request to the Flask API endpoint (e.g., /weather?city=London).
+Flask to OpenWeatherMap:
+
+Flask processes the user request, extracts the city name, and sends an HTTP request to the OpenWeatherMap API.
+OpenWeatherMap Response:
+
+OpenWeatherMap returns weather data in JSON format.
+Flask processes this data and formats it into a simplified JSON response.
+Flask Response to User:
+
+Flask sends the weather data back to the user as a JSON response.
+Key Points of Communication
+HTTP Protocol:
+Used for client-to-Flask and Flask-to-OpenWeatherMap communication.
+Docker Networking:
+Connects the containerized Flask app to the host machine (and optionally other containers if extended).
+RESTful Architecture:
+Each service (Flask and OpenWeatherMap) adheres to REST principles, ensuring loosely coupled communication.
+By relying on standardized protocols and tools (e.g., HTTP, Docker, REST), the app achieves seamless interaction among its components, promoting modularity and scalability.
